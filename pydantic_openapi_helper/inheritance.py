@@ -304,6 +304,11 @@ def class_mapper(models, find_and_replace=None):
 
     # add enum classes to mapper
     schemas = get_schemas_inheritance(models)
+
+    # If the mapper returns anything that is not present in the API
+    # schema, (like an unused Enum), delete it
+    mapper = {k: v for k, v in mapper.items() if k in schemas.keys()}
+
     enums = {}
     for name in schemas:
         s = schemas[name]
